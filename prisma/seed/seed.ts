@@ -29,4 +29,22 @@ export async function seed(args?: SeedArguments) {
       },
     ],
   });
+  await prisma.task.createMany({
+    data: [
+      {
+        id: 'first',
+        userId: 'student',
+        title: 'learn to code',
+        description: 'do it',
+        completeDate: 'Jan 31',
+      },
+      {
+        id: 'second',
+        userId: 'student',
+        title: 'relearn to code',
+        description: 'just do it',
+        completeDate: 'Jan 31',
+      },
+    ],
+  });
 }
