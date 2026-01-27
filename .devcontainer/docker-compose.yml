@@ -28,5 +28,4 @@ volumes:
   postgres-data:
 
 networks:
-  dev-network:es:
-  postgres-data:
+  dev-network:
