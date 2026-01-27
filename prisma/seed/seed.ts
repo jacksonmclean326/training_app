@@ -1,50 +1,25 @@
-import { object } from 'zod';
-import { prisma } from '../server';
 import { defineOptions, SeedArguments } from './types';
+import { deleteMany } from './functions/delete';
+import { createManyUsers, createUsers } from './functions/createUsers';
+import { createManyTasks, createTasks } from './functions/createTasks';
 
-export const options = defineOptions({});
+export const options = defineOptions({
+  createMany: {
+    type: 'string',
+    description: 'createManyRecords  createTasks();(users, tasks)',
+  },
+});
 
 export async function seed(args?: SeedArguments) {
-  await prisma.user.createMany({
-    data: [
-      {
-        accountType: 'Student',
-        firstName: 'Jackson',
-        lastName: 'McLean',
-        netId: 'jcmsa',
-        id: 'student',
-        preferredFirstName: 'jackson',
-        preferredLastName: 'McLean',
-        roles: ['user'],
-      },
-      {
-        accountType: 'Employee',
-        firstName: 'Jeff',
-        lastName: 'Bezos',
-        netId: 'jeffds',
-        id: 'employee',
-        preferredFirstName: 'jeff',
-        preferredLastName: 'bezos',
-        roles: ['admin'],
-      },
-    ],
-  });
-  await prisma.task.createMany({
-    data: [
-      {
-        id: 'first',
-        userId: 'student',
-        title: 'learn to code',
-        description: 'do it',
-        completeDate: 'Jan 31',
-      },
-      {
-        id: 'second',
-        userId: 'student',
-        title: 'relearn to code',
-        description: 'just do it',
-        completeDate: 'Jan 31',
-      },
-    ],
-  });
+  deleteMany();
+  createUsers();
+  createTasks();
+
+  if (args?.createMany === 'users') {
+    createManyUsers();
+  }
+
+  if (args?.createMany == 'tasks') {
+    createManyTasks();
+  }
 }
