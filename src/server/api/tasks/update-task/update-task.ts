@@ -10,15 +10,20 @@ const updateTaskInput = z.object({
   status: z.enum(Status).optional(),
 });
 
-const updateTaskOutput = z.void();
+const updateTaskOutput = z.object({
+  title: z.string(),
+  description: z.string(),
+  status: z.enum(Status),
+  completedDate: z.date().nullable(),
+});
 
 export const updateTask = authorizedProcedure
-  .meta({ requiredPermissions: [] })
+  .meta({ requiredPermissions: ['manage-tasks'] })
   .input(updateTaskInput)
   .output(updateTaskOutput)
   .mutation(async opts => {
     try {
-      await prisma.task.update({
+      return await prisma.task.update({
         where: {
           id: opts.input.id,
           userId: opts.ctx.userId,

@@ -1,20 +1,35 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { TRPC_CLIENT } from '../../utils/trpc.client';
 import { trpcResource } from '@fhss-web-team/frontend-utils';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { TaskCardComponent } from './task-card/task-card.component';
+import { NewTaskComponent } from './new-task/new-task.component';
+import { isNumberObject } from 'util/types';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-tasks',
-  imports: [MatProgressSpinnerModule, MatPaginator],
+  imports: [
+    MatProgressSpinnerModule,
+    MatPaginator,
+    TaskCardComponent,
+    MatIconModule,
+    MatButtonModule,
+  ],
   templateUrl: './tasks.page.html',
   styleUrl: './tasks.page.scss',
 })
 export class TasksPage {
   private readonly trpc = inject(TRPC_CLIENT);
+  private readonly dialog = inject(MatDialog);
 
   private readonly pageOffset = signal(0);
   protected readonly pageSize = 12;
+
+  protected readonly paginator = viewChild.required(MatPaginator);
 
   protected readonly taskResource = trpcResource(
     this.trpc.tasks.getTasksByUser.mutate,
@@ -29,6 +44,20 @@ export class TasksPage {
 
   protected handlePageEvent(e: PageEvent) {
     this.pageOffset.set(e.pageIndex * e.pageSize);
+  }
+
+  protected async taskDeleted() {
+    await this.taskResource.refresh();
+    if (
+      this.pageOffset() != 0 &&
+      this.taskResource.value()?.data.length === 0
+    ) {
+      this.paginator().previousPage();
+    }
+  }
+
+  protected openCreateDialog() {
+    this.dialog.open(NewTaskComponent);
   }
 }
 
