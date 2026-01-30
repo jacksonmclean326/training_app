@@ -45,5 +45,6 @@ export const getTasksByUser = authorizedProcedure
       skip: opts.input.pageOffset,
       take: opts.input.pageSize,
     });
+
     return { data, totalCount };
   });

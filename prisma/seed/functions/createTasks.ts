@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { prisma } from '../../server';
 
 export const createManyTasks = async () => {
-  const NUM_OF_TASKS = 10;
+  const NUM_OF_TASKS = 30;
   const data = [];
   for (let i = 0; i < NUM_OF_TASKS; i++) {
     data.push({

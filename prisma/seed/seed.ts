@@ -11,15 +11,15 @@ export const options = defineOptions({
 });
 
 export async function seed(args?: SeedArguments) {
-  deleteMany();
-  createUsers();
-  createTasks();
+  await deleteMany();
+  await createUsers();
+  await createTasks();
 
   if (args?.createMany === 'users') {
-    createManyUsers();
+    await createManyUsers();
   }
 
   if (args?.createMany == 'tasks') {
-    createManyTasks();
+    await createManyTasks();
   }
 }
