@@ -1,0 +1,4 @@
+@for (task of taskResource.value()?.data; track task.id) {
+  <p>{{ task.title }}</p>
+  <p>{{ task.description }}</p>
+}
