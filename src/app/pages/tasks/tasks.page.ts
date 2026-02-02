@@ -5,7 +5,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TaskCardComponent } from './task-card/task-card.component';
 import { NewTaskComponent } from './new-task/new-task.component';
-import { isNumberObject } from 'util/types';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -57,7 +56,14 @@ export class TasksPage {
   }
 
   protected openCreateDialog() {
-    this.dialog.open(NewTaskComponent);
+    this.dialog
+      .open(NewTaskComponent)
+      .afterClosed()
+      .subscribe(isSaved => {
+        if (isSaved) {
+          this.taskResource.refresh();
+        }
+      });
   }
 }
 
