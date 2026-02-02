@@ -1,0 +1,13 @@
+<mat-dialog-content>
+  <h2>Warning!</h2>
+  <p>This will delete all of your current tasks! Proceed with caution</p>
+  @if (deleteAll.error()) {
+    <p>Could not delete tasks, please try again</p>
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button aria-label="delete" (click)="delete()">
+    Delete All Tasks
+  </button>
+  <button mat-button aria-label="cancel" (click)="cancel()">Cancel</button>
+</mat-dialog-actions>

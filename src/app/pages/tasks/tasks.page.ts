@@ -8,6 +8,7 @@ import { NewTaskComponent } from './new-task/new-task.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { DeleteAllComponent } from './delete-all/delete-all.component';
 
 @Component({
   selector: 'app-tasks',
@@ -30,7 +31,7 @@ export class TasksPage {
 
   protected readonly paginator = viewChild.required(MatPaginator);
 
-  protected readonly taskResource = trpcResource(
+  taskResource = trpcResource(
     this.trpc.tasks.getTasksByUser.mutate,
     () => {
       return {
@@ -61,6 +62,17 @@ export class TasksPage {
       .afterClosed()
       .subscribe(isSaved => {
         if (isSaved) {
+          this.taskResource.refresh();
+        }
+      });
+  }
+
+  protected openDeleteDialog() {
+    this.dialog
+      .open(DeleteAllComponent)
+      .afterClosed()
+      .subscribe(isDeleted => {
+        if (isDeleted) {
           this.taskResource.refresh();
         }
       });
