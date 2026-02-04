@@ -8,7 +8,9 @@
 @if (taskResource.error()) {
   <p>Failed to retrieve tasks. Please try again.</p>
   <p>{{ taskResource.error()?.message }}</p>
-  <button (click)="taskResource.refresh()">Retry</button>
+  <button (click)="taskResource.refresh()" aria-label="'retry" mat-fab>
+    Retry
+  </button>
 }
 
 @if (taskResource.isLoading()) {
@@ -24,10 +26,12 @@
   }
 </section>
 
-<button (click)="openCreateDialog()" aria-label="Create task" mat-fab>
-  <mat-icon>add</mat-icon>
-</button>
+<div id="buttons">
+  <button (click)="openCreateDialog()" aria-label="Create task" mat-fab>
+    <mat-icon>add</mat-icon>
+  </button>
 
-<button (click)="openDeleteDialog()" aria-label="Delete all tasks" mat-fab>
-  <mat-icon>delete</mat-icon>
-</button>
+  <button (click)="openDeleteDialog()" aria-label="Delete all tasks" mat-fab>
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
