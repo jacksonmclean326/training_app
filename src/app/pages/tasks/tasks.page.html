@@ -8,7 +8,7 @@
 @if (taskResource.error()) {
   <p>Failed to retrieve tasks. Please try again.</p>
   <p>{{ taskResource.error()?.message }}</p>
-  <button (click)="taskResource.refresh()" aria-label="'retry" mat-fab>
+  <button (click)="taskResource.refresh()" aria-label="retry" mat-fab>
     Retry
   </button>
 }
